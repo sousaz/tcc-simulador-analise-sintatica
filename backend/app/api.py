@@ -18,6 +18,8 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-@app.get("/test/", tags=["root"])
+@app.get("/test/")
 async def read_root() -> dict:
     return {"message": "Testando api"}
+
+
