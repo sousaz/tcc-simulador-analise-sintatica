@@ -38,7 +38,7 @@ const AnlBottomUp = () => {
           <div className="col-md-6">
             <div className="row">
               <div className="col-md-9">
-                <CardStepByStep stepCont={stepCont} setStepCont={setStepCont} />
+                <CardStepByStep stepCont={stepCont} setStepCont={setStepCont} stepByStep={steps[stepCont]['stepByStep']} qtSteps={steps.length-1} />
                 <CardGrammar />
               </div>
               <div className="col-md-3">
@@ -47,8 +47,8 @@ const AnlBottomUp = () => {
             </div>
           </div>
           <div className="col-md-6">
-            <InputTape inputTape={steps[0]['input']} pointer={0} />
-            <TableBottomUp parsingTable={parsingTable} stepMarker={["id", 0]} />
+            <InputTape inputTape={steps[0]['input']} pointer={steps[stepCont]['pointer']} />
+            <TableBottomUp parsingTable={parsingTable} stepMarker={steps[stepCont]['stepMarker']} />
           </div>
         </div>
       }

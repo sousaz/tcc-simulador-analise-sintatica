@@ -5,32 +5,31 @@ def bottom_up_algorithm(action_table, goto_table, input):
     input_tape = input.split(' ')
     input_tape.append('$')
 
-    step_number = 0
-
-    # Gardar os passos
-    step = 0
-    steps = {step: {'stack': stack.copy(), 'input': input_tape, 'step_action': []}}
-    detailed_steps = [{'label': 'Inicio de analise', 'stack': stack.copy(), 
-                       'input': input_tape.copy(), 'stepNumber': step_number}]
+    #Detalhamento do passo a passo
+    detailed_steps = [{'stepByStep':['Inicio da analise'], 
+                        'stack': stack[::-1].copy(),
+                        'input': input_tape.copy(), 
+                        'pointer': pointer,
+                        'stepMarker': ['', '']}]
     
     run = True
     while (run == True):
+        #Label do passo a passo
+        step_by_step = []
+
         action = ['', '']
         transition = ['', '']
-        step += 1
-        aux_stack = []
-        for i in stack:
-            aux_stack.append(i)
 
         action[0] = int(stack[len(stack) - 1]) + 1
         action[1] = input_tape[pointer]
         action_movement = action_table[action[1]][action[0]].split('(')
 
-        step_number+=1
-
-        detailed_steps.append({'label': f'AÇÃO[{action[1]}, {action[0]}] => {action_movement}', 
-                                'stack': stack.copy(), 'input': input_tape.copy(), 
-                                'stepNumber': step_number})
+        step_by_step.append(f'AÇÃO[{action[1]}, {action[0]}] => {action_movement}')
+        detailed_steps.append({'stepByStep': step_by_step.copy(), 
+                                'stack': stack[::-1].copy(), 
+                                'input': input_tape.copy(),
+                                'pointer': pointer,
+                                'stepMarker': [f'{action[1]}', action[0]-1]})
 
         match action_movement[0][0]:
             case 'r':
@@ -41,27 +40,36 @@ def bottom_up_algorithm(action_table, goto_table, input):
                 for i in range(qt_unstack):
                     stack.pop()
 
-                detailed_steps.append({'label': f'Desempilhar {qt_unstack}', 
-                                        'stack': stack.copy(), 'input': input_tape.copy(), 
-                                        'stepNumber': step_number})
+                step_by_step.append(f'Desempilhar {qt_unstack}')
+                detailed_steps.append({'stepByStep': step_by_step.copy(), 
+                                        'stack': stack[::-1].copy(), 
+                                        'input': input_tape.copy(),
+                                        'pointer': pointer,
+                                        'stepMarker': ['', '']
+                                        })
 
                 transition[0] = int(stack[len(stack) - 1]) + 1
                 transition[1] = reduce_div[0]
                 goto_movement = goto_table[transition[1]][transition[0]]
-
-                detailed_steps.append({'label': f'TRANSIÇÃO[{transition[1]}, {transition[0]}] => {goto_movement}', 
-                                        'stack': stack.copy(), 'input': input_tape.copy(), 
-                                        'stepNumber': step_number})
+                
+                step_by_step.append(f'TRANSIÇÃO[{transition[1]}, {transition[0]}] => {goto_movement}')
+                detailed_steps.append({'stepByStep': step_by_step.copy(), 
+                                        'stack': stack[::-1].copy(), 
+                                        'input': input_tape.copy(),
+                                        'pointer': pointer,
+                                        'stepMarker': [f'{transition[1]}', transition[0]-1]})
                 if (goto_movement[0] == 's'):
                     stack.append(reduce_div[0])
                     stack.append(str(int(goto_movement[1:])))
                 else:
-                    steps[step] = {'stack': stack, 'input': input_tape[pointer:], 'step_action': ['Erro']}
                     break
-
-                detailed_steps.append({'label': f'Empilhar {reduce_div[0]}, {str(int(goto_movement[1:]))}', 
-                                        'stack': stack.copy(), 'input': input_tape.copy(), 
-                                        'stepNumber': step_number})
+                
+                step_by_step.append(f'Empilhar {reduce_div[0]}, {str(int(goto_movement[1:]))}')
+                detailed_steps.append({'stepByStep': step_by_step.copy(), 
+                                        'stack': stack[::-1].copy(), 
+                                        'input': input_tape.copy(),
+                                        'pointer': pointer,
+                                        'stepMarker': ['', '']})
                 aux_step_action = [f'Reduzir: {action_movement[1]}',
                                    f'GOTO[{transition[0]},{transition[1]}] => {goto_movement}',
                                    f'Empilhar: {reduce_div[0]}, {str(int(goto_movement[1:]))}'
@@ -70,33 +78,32 @@ def bottom_up_algorithm(action_table, goto_table, input):
                 stack.append(action[1])
                 stack.append(action_movement[0][1])
                 
-                detailed_steps.append({'label': f'Empilhar: {action[1]}, {action_movement[0][1]}', 
-                                        'stack': stack.copy(), 'input': input_tape.copy(), 
-                                        'stepNumber': step_number})
+                step_by_step.append(f'Empilhar: {action[1]}, {action_movement[0][1]}')
+                detailed_steps.append({'stepByStep': step_by_step.copy(), 
+                                        'stack': stack[::-1].copy(), 
+                                        'input': input_tape.copy(),
+                                        'pointer': pointer,
+                                        'stepMarker': ['', '']})
 
                 aux_step_action = [f'Empilhar: {action[1]}, {action_movement[0][1]}']
                 pointer += 1
             case 'a':
-                
-                detailed_steps.append({'label': f'A entrada foi aceita!', 
-                                        'stack': stack.copy(), 'input': input_tape.copy(), 
-                                        'stepNumber': step_number})
-
-                steps[step] = {'stack': [aux_stack], 'input': input_tape[pointer:], 'step_action': ['Aceita']}
+                step_by_step.append(f'A entrada foi aceita!')
+                detailed_steps.append({'stepByStep': step_by_step.copy(), 
+                                        'stack': stack[::-1].copy(), 
+                                        'input': input_tape.copy(),
+                                        'pointer': pointer,
+                                        'stepMarker': ['', '']})
                 break
             case 'e':
-                detailed_steps.append({'label': f'A entrada não está correta.', 
-                                        'stack': stack.copy(), 'input': input_tape.copy(), 
-                                        'stepNumber': step_number})
-
-                print('Erro')
-                steps[step] = {'stack': f'{aux_stack}', 'input': input_tape[pointer:], 'step_action': ['Erro']}
+                step_by_step.append(f'A entrada não está correta.')
+                detailed_steps.append({'stepByStep': step_by_step.copy(),
+                                        'stack': stack[::-1].copy(), 
+                                        'input': input_tape.copy(),
+                                        'pointer': pointer,
+                                        'stepMarker': ['', '']})
                 break
             case _:
                 return {'Erro': 'Houve um erro!'}
-
-        if (action_movement[0][0] == 's'):
-            steps[step] = {'stack': aux_stack, 'input': input_tape[pointer - 1:], 'step_action': aux_step_action}
-        else:
-            steps[step] = {'stack': aux_stack, 'input': input_tape[pointer:], 'step_action': aux_step_action}
+        print('TESTE 1')
     return detailed_steps

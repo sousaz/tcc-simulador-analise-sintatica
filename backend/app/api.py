@@ -32,10 +32,13 @@ async def read_root() -> dict:
 
 @app.get("/analyze/{grammar}/{input}/{analysis_type}")
 async def get_table(input: str, grammar: str, analysis_type: str):
+    print('TESTE')
     goto_action_tables = parsing_table.get_goto_action_tables(grammar, analysis_type)
+    print(goto_action_tables)
     
     steps_parsing = parsing_algorithm.bottom_up_algorithm(goto_action_tables['action_table'],
                                                         goto_action_tables['goto_table'],
                                                       input
                                                       )
+    print(steps_parsing)
     return {'parsingTable': goto_action_tables, 'stepsParsing': steps_parsing}
