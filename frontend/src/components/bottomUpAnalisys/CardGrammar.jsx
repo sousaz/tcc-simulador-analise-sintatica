@@ -1,4 +1,4 @@
-const CardGrammar = (props: any) => {
+const CardGrammar = () => {
   return (
     <div className="border border-primary px-3 pb-3 mb-3 stack-card">
       <h4 className="mt-3 border-bottom border-primary">Gramática</h4>
@@ -8,7 +8,7 @@ const CardGrammar = (props: any) => {
         <div className="bg-primary-subtle p-1">T - djnauisdbh</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CardGrammar
+export default CardGrammar;
