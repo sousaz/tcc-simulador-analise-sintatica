@@ -17,6 +17,7 @@ const BottomUpAnalisys = () => {
   const [loading, setLoading] = useState(true);
   const [parsingTable, setParsingTable] = useState({});
   const [steps, setSteps] = useState([]);
+  const [grammar, setGrammar] = useState([]);
 
   useEffect(() => {
     getAllData(
@@ -28,6 +29,7 @@ const BottomUpAnalisys = () => {
         setLoading(false);
         console.log(response.data);
 
+        setGrammar(response.data["grammar"]);
         setSteps(response.data["stepsParsing"]);
         setParsingTable(response.data["parsingTable"]);
       })
@@ -49,7 +51,7 @@ const BottomUpAnalisys = () => {
                   stepByStep={steps[stepCont]["stepByStep"]}
                   qtSteps={steps.length - 1}
                 />
-                <CardGrammar />
+                <CardGrammar grammar={grammar} />
               </div>
               <div className="col-md-3">
                 <Stack stack={steps[stepCont]["stack"]} />

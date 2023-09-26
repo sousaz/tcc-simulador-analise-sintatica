@@ -69,12 +69,14 @@ header {
 }
 
 .loader {
+  /*background-image: url("assets/img/if-logo.png");*/
   animation: is-rotating 1s infinite;
   border: 6px solid #e5e5e5;
   border-radius: 50%;
-  border-top-color: #51d4db;
-  height: 20rem;
-  width: 20rem;
+  border-top-color: #3fa14c;
+  height: 15rem;
+  width: 15rem;
+  display: flex;
 }
 
 @keyframes is-rotating {
