@@ -7,7 +7,7 @@ h11==0.14.0
 httptools==0.6.0
 idna==3.4
 lxml==4.9.3
-numpy==1.25.2
+numpy==1.21.6
 pandas==2.0.3
 pip==23.1.2
 pydantic==2.2.1
