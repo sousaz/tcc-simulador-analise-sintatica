@@ -26,7 +26,12 @@ def bottom_up_algorithm(action_table, goto_table, input):
 
         action[0] = int(stack[len(stack) - 1]) + 1
         action[1] = input_tape[pointer]
-        action_movement = action_table[action[1]][action[0]].split("(")
+
+        action_movement = action_table[action[1]][action[0]].split("[")
+        action_movement[0] = action_movement[0].strip()
+        if action_movement[0] != "ACEITO" and "ERRO!":
+            action_movement[1] = action_movement[1].strip("]")
+            action_movement[1] = action_movement[1].strip()
 
         step_by_step.append(f"AÇÃO[{action[1]}, {action[0] - 1}] => {action_movement}")
         detailed_steps.append(
@@ -40,8 +45,10 @@ def bottom_up_algorithm(action_table, goto_table, input):
         )
 
         match action_movement[0][0]:
-            case "r":
+            case "R":
+                print(action_movement)
                 action_movement[1] = action_movement[1][:-1]
+                print(action_movement)
                 reduce_div = action_movement[1].split(" ")
                 qt_unstack = 2 * len(reduce_div[2:])
 
@@ -75,14 +82,14 @@ def bottom_up_algorithm(action_table, goto_table, input):
                         "stepMarker": [f"{transition[1]}", transition[0] - 1],
                     }
                 )
-                if goto_movement[0] == "s":
+                if goto_movement[0] == "E":
                     stack.append(reduce_div[0])
-                    stack.append(str(int(goto_movement[1:])))
+                    stack.append(str(int(goto_movement[10])))
                 else:
                     break
 
                 step_by_step.append(
-                    f"Empilhar {reduce_div[0]}, {str(int(goto_movement[1:]))}"
+                    f"Empilhar {reduce_div[0]}, {str(int(goto_movement[10]))}"
                 )
                 detailed_steps.append(
                     {
@@ -96,11 +103,12 @@ def bottom_up_algorithm(action_table, goto_table, input):
                 aux_step_action = [
                     f"Reduzir: {action_movement[1]}",
                     f"GOTO[{transition[0]},{transition[1]}] => {goto_movement}",
-                    f"Empilhar: {reduce_div[0]}, {str(int(goto_movement[1:]))}",
+                    f"Empilhar: {reduce_div[0]}, {str(int(goto_movement[10]))}",
                 ]
-            case "s":
+            case "E":
+                print(action_movement)
                 stack.append(action[1])
-                stack.append(action_movement[0][1])
+                stack.append(action_movement[1])
 
                 step_by_step.append(f"Empilhar: {action[1]}, {action_movement[0][1]}")
                 detailed_steps.append(
@@ -115,7 +123,7 @@ def bottom_up_algorithm(action_table, goto_table, input):
 
                 aux_step_action = [f"Empilhar: {action[1]}, {action_movement[0][1]}"]
                 pointer += 1
-            case "a":
+            case "A":
                 step_by_step.append(f"A entrada foi aceita!")
                 detailed_steps.append(
                     {
@@ -127,7 +135,7 @@ def bottom_up_algorithm(action_table, goto_table, input):
                     }
                 )
                 break
-            case "e":
+            case "E":
                 step_by_step.append(f"A entrada não está correta.")
                 detailed_steps.append(
                     {
@@ -141,5 +149,4 @@ def bottom_up_algorithm(action_table, goto_table, input):
                 break
             case _:
                 return {"Erro": "Houve um erro!"}
-        print("TESTE 1")
     return detailed_steps

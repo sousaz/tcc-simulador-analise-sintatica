@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { getAllData } from "../services/ParsingService";
 
@@ -12,6 +12,7 @@ import LoadingCard from "../components/common/LoadingCard";
 
 const BottomUpAnalisys = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [stepCont, setStepCont] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -26,12 +27,20 @@ const BottomUpAnalisys = () => {
       location.state["parsingType"]
     )
       .then((response) => {
-        setLoading(false);
         console.log(response.data);
 
-        setGrammar(response.data["grammar"]);
-        setSteps(response.data["stepsParsing"]);
-        setParsingTable(response.data["parsingTable"]);
+        if (response.data["ERROR_CODE"] == 0) {
+          setLoading(false);
+          setGrammar(response.data["grammar"]);
+          setSteps(response.data["stepsParsing"]);
+          setParsingTable(response.data["parsingTable"]);
+        } else {
+          navigate("/error", {
+            state: {
+              message: response.data["errorMessage+3"],
+            },
+          });
+        }
       })
       .catch((error) => console.error(error));
   }, []);

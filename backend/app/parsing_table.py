@@ -2,7 +2,7 @@
 import pandas as pd
 
 
-# Obter tabela do site
+# Obtem a tabela de analise do site: https://smlweb.cpsc.ucalgary.ca/
 def get_parsing_table(grammar, analysis_type):
     if analysis_type == "ll1":
         aux_type = "ll1-table"
@@ -14,21 +14,12 @@ def get_parsing_table(grammar, analysis_type):
     url = f"https://smlweb.cpsc.ucalgary.ca/{aux_type}.php?grammar={grammar}"
     url = url.replace(" ", "%20")
 
-    print(url)
-
-    print("TESTE 0")
-
     parsing_table = pd.read_html(url)
-    print(parsing_table)
     if analysis_type == "lr0" or analysis_type == "lr1":
-        print("LR0 ou LR1")
         return parsing_table[2]
     elif analysis_type == "ll1":
-        print("LL1")
         return parsing_table[1]
     elif analysis_type == "slr1" or analysis_type == "lalr1":
-        print("SLR1")
-        print(parsing_table[3])
         return parsing_table[3]
     else:
         return {"Erro": "Houve um erro!"}
@@ -79,10 +70,18 @@ def get_goto_action_tables(grammar, analysis_type):
         for key in parsing_table.keys() & term_nterm["terminals"]
     }
     action["$"] = parsing_table["$"]
+
+    action = replace_dict(action, " ", "ERRO!")
+    action = replace_dict(action, "acc", "ACEITO")
+    action = replace_functions(action)
+    action = replace_functions(action)
+
     goto = {
         key: parsing_table[key]
         for key in parsing_table.keys() & term_nterm["nonterminals"]
     }
+
+    goto = replace_functions(goto)
 
     return {
         "terminals_nonterminals": term_nterm,
@@ -91,7 +90,33 @@ def get_goto_action_tables(grammar, analysis_type):
     }
 
 
+def replace_dict(dictionary, original, final):
+    for key in dictionary.keys():
+        for index, value in dictionary[key].items():
+            if value == original:
+                dictionary[key][index] = value.replace(original, final)
+
+    return dictionary
+
+
+def replace_functions(dictionary):
+    for key in dictionary.keys():
+        for index, value in dictionary[key].items():
+            if value[0] == "r":
+                dictionary[key][index] = value.replace(
+                    value, f"REDUZIR[ {value[2:-1]} ]"
+                )
+            elif value[0] == "s":
+                dictionary[key][index] = value.replace(value, f"EMPILHAR[ {value[1]} ]")
+    return dictionary
+
+
 # open_site('https://www.selenium.dev/documentation/webdriver/getting_started/install_drivers/')
 # print(get_parsing_table('SOMA->A|d.A->b.A->c.', 'slr1'))
 # print(get_parsing_dict(get_parsing_table('SOMA->A|d.A->b.A->c.', 'slr1')))
-# print(get_goto_action_tables('E->E v T.E->T.T->T and F.T->F.F->parenteses_esq E parenteses_dir.F->id.', 'slr1'))
+# print(
+#    get_goto_action_tables(
+#        "E->E v T.E->T.T->T and F.T->F.F->parenteses_esq E parenteses_dir.F->id.",
+#        "slr1",
+#    )
+# )

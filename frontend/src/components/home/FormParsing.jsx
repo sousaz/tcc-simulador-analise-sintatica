@@ -67,6 +67,9 @@ const FormParsing = () => {
                 value={parsingType}
               >
                 <option value="slr1">SLR</option>
+                <option value="lr1">LR1</option>
+                <option value="lr0">LR0</option>
+                <option value="lalr1">LALR</option>
               </select>
 
               <button type="submit" className="btn btn-primary mb-3">

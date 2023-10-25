@@ -1,5 +1,5 @@
 # Importacoes
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 # Importar funcoes
@@ -34,17 +34,25 @@ async def read_root() -> dict:
 
 @app.get("/analyze/{grammar}/{input}/{analysis_type}")
 async def get_table(input: str, grammar: str, analysis_type: str):
-    print("TESTE")
-    new_grammar = utils.grammar_formatter(grammar)
-    goto_action_tables = parsing_table.get_goto_action_tables(grammar, analysis_type)
-    print(goto_action_tables)
+    try:
+        new_grammar = utils.grammar_formatter(grammar)
+        treated_grammar = utils.symbol_treat(grammar)
 
-    steps_parsing = parsing_algorithm.bottom_up_algorithm(
-        goto_action_tables["action_table"], goto_action_tables["goto_table"], input
-    )
-    print(steps_parsing)
-    return {
-        "parsingTable": goto_action_tables,
-        "stepsParsing": steps_parsing,
-        "grammar": new_grammar,
-    }
+        goto_action_tables = parsing_table.get_goto_action_tables(
+            treated_grammar, analysis_type
+        )
+
+        steps_parsing = parsing_algorithm.bottom_up_algorithm(
+            utils.dict_treat(goto_action_tables["action_table"]),
+            utils.dict_treat(goto_action_tables["goto_table"]),
+            input,
+        )
+
+        return {
+            "ERROR_CODE": 0,
+            "parsingTable": goto_action_tables,
+            "stepsParsing": steps_parsing,
+            "grammar": new_grammar,
+        }
+    except Exception as e:
+        return {"ERROR_CODE": 1, "errorMessage": f"Houve um erro! {e}"}

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import Home from "./routes/Home";
 import BottomUp from "./routes/BottomUpAnalisys";
+import Error from "./routes/Error";
 
 import "./index.css";
 
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: "/bottom-up",
         element: <BottomUp />,
+      },
+      {
+        path: "/error",
+        element: <Error />,
       },
     ],
   },
