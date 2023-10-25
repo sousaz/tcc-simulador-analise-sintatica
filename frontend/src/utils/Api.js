@@ -1,7 +1,8 @@
 import axios from "axios";
+require("dotenv").config();
 
 const api = axios.create({
-  baseURL: import.meta.env.API_SASC_URL ?? "http://localhost:8000",
+  baseURL: "https://api-sasc.onrender.com",
 });
 
 export default api;
