@@ -61,5 +61,6 @@ async def get_table(input: str, grammar: str, analysis_type: str):
             "stepsParsing": steps_parsing,
             "grammar": new_grammar,
         }
+
     except Exception as e:
         return {"ERROR_CODE": 1, "errorMessage": f"Houve um erro! {e}"}
