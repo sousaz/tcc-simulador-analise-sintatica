@@ -27,8 +27,6 @@ const BottomUpAnalisys = () => {
       location.state["parsingType"]
     )
       .then((response) => {
-        console.log(response.data);
-
         if (response.data["ERROR_CODE"] == 0) {
           setLoading(false);
           setGrammar(response.data["grammar"]);
@@ -37,7 +35,7 @@ const BottomUpAnalisys = () => {
         } else {
           navigate("/error", {
             state: {
-              message: response.data["errorMessage+3"],
+              message: response.data["errorMessage"],
             },
           });
         }
