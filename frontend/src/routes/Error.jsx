@@ -1,13 +1,13 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-import CardInfo from "../components/common/CardInfo";
+import CardError from "../components/common/CardError";
 
-const Error = (message) => {
+const Error = () => {
   const location = useLocation();
 
   return (
     <>
-      <CardInfo message={location.state["message"]} />
+      <CardError message={location.state["message"]} />
     </>
   );
 };

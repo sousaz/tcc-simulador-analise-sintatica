@@ -1,7 +1,7 @@
 const InputTape = ({ inputTape, pointer }) => {
   return (
     <div className="border border-primary px-3 pb-3">
-      <h4 className="mt-3 border-bottom border-primary ">Fita de entrada</h4>
+      <h4 className="mt-3 border-bottom border-primary">Fita de entrada</h4>
       <div className="hstack gap-3">
         {inputTape.map((element, index) => {
           if (pointer == index)

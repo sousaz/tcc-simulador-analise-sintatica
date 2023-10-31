@@ -28,6 +28,7 @@ const BottomUpAnalisys = () => {
     )
       .then((response) => {
         if (response.data["ERROR_CODE"] == 0) {
+          console.log(response.data);
           setLoading(false);
           setGrammar(response.data["grammar"]);
           setSteps(response.data["stepsParsing"]);
@@ -52,13 +53,17 @@ const BottomUpAnalisys = () => {
           <div className="col-md-6">
             <div className="row">
               <div className="col-md-9">
+                <InputTape
+                  inputTape={steps[0]["input"]}
+                  pointer={steps[stepCont]["pointer"]}
+                />
                 <CardStepByStep
                   stepCont={stepCont}
                   setStepCont={setStepCont}
                   stepByStep={steps[stepCont]["stepByStep"]}
+                  stepByStepDetailed={steps[stepCont]["stepByStepDetailed"]}
                   qtSteps={steps.length - 1}
                 />
-                <CardGrammar grammar={grammar} />
               </div>
               <div className="col-md-3">
                 <Stack stack={steps[stepCont]["stack"]} />
@@ -66,14 +71,11 @@ const BottomUpAnalisys = () => {
             </div>
           </div>
           <div className="col-md-6">
-            <InputTape
-              inputTape={steps[0]["input"]}
-              pointer={steps[stepCont]["pointer"]}
-            />
             <TableBottomUp
               parsingTable={parsingTable}
               stepMarker={steps[stepCont]["stepMarker"]}
             />
+            <CardGrammar grammar={grammar} />
           </div>
         </div>
       )}
