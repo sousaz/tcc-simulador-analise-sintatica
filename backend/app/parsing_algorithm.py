@@ -2,6 +2,8 @@ def bottom_up_algorithm(action_table, goto_table, input):
     stack = ["0"]
     pointer = 0
 
+    aux_cont = 0
+
     input_tape = input.split(" ")
     input_tape.append("$")
 
@@ -19,6 +21,10 @@ def bottom_up_algorithm(action_table, goto_table, input):
 
     run = True
     while run == True:
+        aux_cont += 1
+
+        if aux_cont > 1000:
+            break
         # Label do passo a passo
         step_by_step = []
         step_by_step_detailed = []
@@ -47,7 +53,6 @@ def bottom_up_algorithm(action_table, goto_table, input):
                 }
             )
             break
-
         action_movement = action_table[action[1]][action[0]].split("[")
         action_movement[0] = action_movement[0].strip()
         if action_movement[0] != "ACEITO" and action_movement[0] != "ERRO!":
@@ -73,9 +78,12 @@ def bottom_up_algorithm(action_table, goto_table, input):
         )
 
         if action_movement[0][:8] == "REDUZIR":
-            action_movement[1] = action_movement[1][:-1]
-            reduce_div = action_movement[1].split(" ")
-            qt_unstack = 2 * len(reduce_div[2:])
+            array_action_movement = action_movement[1].split(" ")
+
+            # Movimento de desempilhar
+            # Elementos ao lado esquerdo da producao
+            reduce_elements = array_action_movement[2:]
+            qt_unstack = 2 * len(reduce_elements)
 
             for i in range(qt_unstack):
                 stack.pop()
@@ -85,7 +93,7 @@ def bottom_up_algorithm(action_table, goto_table, input):
                 [
                     "O primeiro passo do movimento de reduzir é desempilhar.",
                     "Nesse passo são desempilhados elementos igual à quantidade de símbolos à direita da produção apontada multiplicada por dois.",
-                    f"Nesse caso 2 * {len(reduce_div[2:])} = {qt_unstack}",
+                    f"Nesse caso 2 * {len(reduce_elements)} = {qt_unstack}",
                 ]
             )
             detailed_steps.append(
@@ -100,7 +108,7 @@ def bottom_up_algorithm(action_table, goto_table, input):
             )
 
             transition[0] = int(stack[len(stack) - 1]) + 1
-            transition[1] = reduce_div[0]
+            transition[1] = array_action_movement[0]
             goto_movement = goto_table[transition[1]][transition[0]]
 
             step_by_step.append(
@@ -122,20 +130,20 @@ def bottom_up_algorithm(action_table, goto_table, input):
                     "stepMarker": [f"{transition[1]}", transition[0] - 1],
                 }
             )
+
+            stackUp = str(int(goto_movement[10:].split(" ")[0]))
             if goto_movement[0] == "E":
-                stack.append(reduce_div[0])
-                stack.append(str(int(goto_movement[10])))
+                stack.append(array_action_movement[0])
+                stack.append(stackUp)
             else:
                 break
 
-            step_by_step.append(
-                f"Empilhar {reduce_div[0]}, {str(int(goto_movement[10]))}"
-            )
+            step_by_step.append(f"Empilhar {array_action_movement[0]}, {stackUp}")
             step_by_step_detailed.append(
                 [
                     "O terceiro passo do movimento de reduzir é empilhar.",
                     "São colocados na pilha o símbolo do lado esquerdo da produção e o estado encontrado na tabela de transições.",
-                    f"No caso é empilhado o simbolo ➜{reduce_div[0]} e o estado ➜{str(int(goto_movement[10]))}.",
+                    f"No caso é empilhado o simbolo ➜{array_action_movement[0]} e o estado ➜{str(int(goto_movement[10]))}.",
                 ]
             )
             detailed_steps.append(
@@ -174,6 +182,7 @@ def bottom_up_algorithm(action_table, goto_table, input):
 
             pointer += 1
         elif action_movement[0] == "ACEITO":
+            print("parse alg 6")
             step_by_step.append(f"A entrada foi aceita!")
             step_by_step_detailed.append([f"Aceito"])
             detailed_steps.append(
@@ -188,6 +197,7 @@ def bottom_up_algorithm(action_table, goto_table, input):
             )
             break
         elif action_movement[0] == "ERRO!":
+            print("parse alg 7")
             step_by_step.append(f"A entrada não está correta.")
             step_by_step_detailed.append([f"A entrada tem um erro sintático"])
             detailed_steps.append(
@@ -202,5 +212,6 @@ def bottom_up_algorithm(action_table, goto_table, input):
             )
             break
         else:
+            print("parse alg 7")
             return {"Erro": "Houve um erro!"}
     return detailed_steps

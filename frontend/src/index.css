@@ -68,6 +68,7 @@ header {
 .stack-card {
   text-align: center;
   align-items: center;
+  width: auto;
 }
 
 .loader {

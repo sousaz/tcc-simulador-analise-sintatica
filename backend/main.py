@@ -65,22 +65,18 @@ async def get_table(input: str, grammar: str, analysis_type: str):
 """
 
 
-@app.get("/analyze/{grammar}/{input}/{analysis_type}")
+@app.get("/analyze/{analysis_type}/{grammar}/{input}")
 async def get_table(input: str, grammar: str, analysis_type: str):
     try:
         new_grammar = utils.grammar_formatter(grammar)
-        treated_grammar = utils.symbol_treat(grammar)
-
         goto_action_tables = parsing_table.get_goto_action_tables(
-            treated_grammar, analysis_type
+            grammar, analysis_type
         )
-
         steps_parsing = parsing_algorithm.bottom_up_algorithm(
-            utils.dict_treat(goto_action_tables["action_table"]),
-            utils.dict_treat(goto_action_tables["goto_table"]),
+            goto_action_tables["action_table"],
+            goto_action_tables["goto_table"],
             input,
         )
-
         return {
             "ERROR_CODE": 0,
             "parsingTable": goto_action_tables,

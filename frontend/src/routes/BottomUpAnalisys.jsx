@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+import { Steps } from "intro.js-react";
+import Cookies from "js-cookie";
+
 import { getAllData } from "../services/ParsingService";
 
 import TableBottomUp from "../components/bottomUpAnalisys/TableBottomUp";
@@ -20,7 +23,46 @@ const BottomUpAnalisys = () => {
   const [steps, setSteps] = useState([]);
   const [grammar, setGrammar] = useState([]);
 
+  const stepsTutorial = [
+    {
+      element: "#inputTape",
+      intro: "Fita de entrada",
+    },
+    {
+      element: "#stack",
+      intro: "Pilha",
+    },
+    {
+      element: "#actionTable",
+      intro: "Tabela de ações",
+    },
+    {
+      element: "#gotoTable",
+      intro: "Tabela de transições",
+    },
+    {
+      element: "#stepByStep",
+      intro: "Passo a passo",
+    },
+    {
+      element: "#accordionStep",
+      intro: "Descrição dos passos",
+    },
+    {
+      element: "#stepButtons",
+      intro: "Botões passo a passo",
+    },
+  ];
+
   useEffect(() => {
+    console.log(
+      "Gramatica: " +
+        location.state["grammar"] +
+        "==Tipo: " +
+        location.state["parsingType"] +
+        "==Fita: " +
+        location.state["inputTape"]
+    );
     getAllData(
       location.state["grammar"],
       location.state["inputTape"],
@@ -46,6 +88,16 @@ const BottomUpAnalisys = () => {
 
   return (
     <div className="container">
+      {loading ? (
+        <div></div>
+      ) : (
+        <Steps
+          enabled={Cookies.get("BottomUpViewed") == undefined ? true : false}
+          steps={stepsTutorial}
+          initialStep={0}
+          onExit={BottomUpAnalisys}
+        />
+      )}
       {loading ? (
         <LoadingCard message={"Carregando dados para analise."} />
       ) : (

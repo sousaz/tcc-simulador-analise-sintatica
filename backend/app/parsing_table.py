@@ -107,7 +107,10 @@ def replace_functions(dictionary):
                     value, f"REDUZIR[ {value[2:-1]} ]"
                 )
             elif value[0] == "s":
-                dictionary[key][index] = value.replace(value, f"EMPILHAR[ {value[1]} ]")
+                # print(value[1:])
+                dictionary[key][index] = value.replace(
+                    value, f"EMPILHAR[ {value[1:]} ]"
+                )
     return dictionary
 
 

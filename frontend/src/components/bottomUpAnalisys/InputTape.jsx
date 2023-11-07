@@ -1,8 +1,8 @@
 const InputTape = ({ inputTape, pointer }) => {
   return (
-    <div className="border border-primary px-3 pb-3">
+    <div className="border border-primary px-3 pb-3" id="inputTape">
       <h4 className="mt-3 border-bottom border-primary">Fita de entrada</h4>
-      <div className="hstack gap-3">
+      <div className="hstack gap-3 overflow-auto">
         {inputTape.map((element, index) => {
           if (pointer == index)
             return (
@@ -14,8 +14,10 @@ const InputTape = ({ inputTape, pointer }) => {
               </div>
             );
           return (
-            <div className="bg-info p-2 tape-element" key={index}>
-              {element}
+            <div>
+              <div className="bg-info p-2 tape-element" key={index}>
+                {element}
+              </div>
             </div>
           );
         })}
