@@ -5,6 +5,7 @@ import FormParsing from "../components/home/FormParsing";
 import { Steps } from "intro.js-react";
 
 import Cookies from "js-cookie";
+import GrammarExamples from "../components/home/GrammarExamples";
 
 const Home = () => {
   const steps = [
@@ -45,6 +46,7 @@ const Home = () => {
         }
       />
       <FormParsing />
+      <GrammarExamples />
     </>
   );
 };

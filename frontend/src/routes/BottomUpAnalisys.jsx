@@ -26,31 +26,45 @@ const BottomUpAnalisys = () => {
   const stepsTutorial = [
     {
       element: "#inputTape",
-      intro: "Fita de entrada",
+      title: "Fita de entrada",
+      intro:
+        "Na fita de entrada está a sequência de tokens que está sendo analisada. Os tokens são colocados na fita de entrada na ordem em que aparecem na entrada.",
     },
     {
       element: "#stack",
-      intro: "Pilha",
+      title: "Pilha",
+      intro:
+        "A pilha armazena símbolos da gramática intercalados com estados do analisador. O símbolo da base da pilha é o estado inicial do analisador.",
     },
     {
       element: "#actionTable",
-      intro: "Tabela de ações",
+      title: "Tabela de ações",
+      intro:
+        "A tabela de ações contém as ações que devem ser tomadas em cada estado do analisador. As ações podem ser: empilhar, reduzir, aceitar e erro.",
     },
     {
       element: "#gotoTable",
-      intro: "Tabela de transições",
+      title: "Tabela de transições",
+      intro:
+        "A tabela de transições contém as transições de estado com relação aos símbolos não terminais.",
     },
     {
       element: "#stepByStep",
-      intro: "Passo a passo",
+      title: "Passo a passo",
+      intro:
+        "No passo a passo está descrito os passos de como foi feito a análise sintática.",
     },
     {
       element: "#accordionStep",
-      intro: "Descrição dos passos",
+      title: "Descrição dos passos",
+      intro:
+        "Para ver mais detalhes sobre um passo da análise clique sobre ele.",
     },
     {
       element: "#stepButtons",
-      intro: "Botões passo a passo",
+      title: "Botões de navegações",
+      intro:
+        "Esses botões são utilizados para navegar no passo a passo da análise sintática.",
     },
   ];
 
