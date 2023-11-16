@@ -5,6 +5,11 @@ header {
   margin-bottom: 3%;
 }
 
+footer {
+  border-top: 2px solid green;
+  margin-top: 3%;
+}
+
 .logo {
   font-family: "Share Tech Mono", monospace !important;
   font-size: 2rem;
