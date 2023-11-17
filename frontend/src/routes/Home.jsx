@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import CardInfo from "../components/common/CardInfo";
 import FormParsing from "../components/home/FormParsing";
 
@@ -42,7 +41,7 @@ const Home = () => {
       />
       <CardInfo
         message={
-          "Bem-vindo ao SASC - Simulador de análise sintática em compiladores."
+          "Bem-vindo ao SASC - Simulador de Análise Sintática em Compiladores."
         }
       />
       <FormParsing />
