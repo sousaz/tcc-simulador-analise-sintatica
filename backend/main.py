@@ -69,14 +69,17 @@ async def get_table(input: str, grammar: str, analysis_type: str):
 async def get_table(input: str, grammar: str, analysis_type: str):
     try:
         new_grammar = utils.grammar_formatter(grammar)
+
         goto_action_tables = parsing_table.get_goto_action_tables(
             grammar, analysis_type
         )
+
         steps_parsing = parsing_algorithm.bottom_up_algorithm(
             goto_action_tables["action_table"],
             goto_action_tables["goto_table"],
             input,
         )
+
         return {
             "ERROR_CODE": 0,
             "parsingTable": goto_action_tables,
@@ -85,4 +88,8 @@ async def get_table(input: str, grammar: str, analysis_type: str):
         }
 
     except Exception as e:
+        import traceback
+        print(f"[ERROR] {e}")
+        traceback.print_exc()
         return {"ERROR_CODE": 1, "errorMessage": f"Houve um erro! {e}"}
+

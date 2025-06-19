@@ -24,8 +24,6 @@ def get_parsing_table(grammar, analysis_type):
     else:
         return {"Erro": "Houve um erro!"}
 
-
-# Converter tabela em dicionario
 def get_parsing_dict(parsing_table):
     parsing_table = parsing_table.drop([0], axis=1)
     parsing_table.columns = parsing_table.iloc[0]
@@ -35,7 +33,6 @@ def get_parsing_dict(parsing_table):
     return parsing_table.to_dict()
 
 
-# Separar terminais e nao-terminais
 def sep_terminals_nonterminals(grammar):
     terminals = []
     nonterminals = []
@@ -59,8 +56,6 @@ def sep_terminals_nonterminals(grammar):
 
     return {"terminals": list(set(terminals)), "nonterminals": list(set(nonterminals))}
 
-
-# Separar tabela de acoes e transicoes
 def get_goto_action_tables(grammar, analysis_type):
     parsing_table = get_parsing_dict(get_parsing_table(grammar, analysis_type))
     term_nterm = sep_terminals_nonterminals(grammar)
