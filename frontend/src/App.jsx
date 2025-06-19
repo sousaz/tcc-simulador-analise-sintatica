@@ -5,13 +5,16 @@ import "./index.css";
 
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
+import GrammarProvider from "./context/GrammarContext";
 
 const App = () => {
   return (
     <>
-      <Header />
-      <Outlet />
-      <Footer />
+      <GrammarProvider>
+        <Header />
+        <Outlet />
+        <Footer />
+      </GrammarProvider>
     </>
   );
 };

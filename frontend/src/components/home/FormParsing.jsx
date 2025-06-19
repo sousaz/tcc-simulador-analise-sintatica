@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Cookies from "js-cookie";
+import { useGrammar } from "../../context/GrammarContext";
 
 const FormParsing = () => {
-  const [grammar, setGrammar] = useState("S->id.");
+  const { grammar, setGrammar } = useGrammar()
   const [parsingType, setParsingType] = useState("slr1");
   const [inputTape, setInputTape] = useState("id");
 
